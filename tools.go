@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/James-Ye/go-frame/win"
 	"io"
 	"net/http"
 	"net/url"
@@ -17,7 +16,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"syscall"
 
 	ct "github.com/daviddengcn/go-colortext"
 )
@@ -222,8 +220,7 @@ func getAppInfo(args ...*string) {
 
 }
 func getAppInfoInt(args ...*int) {
-	majorVersion, _, _ := win.RtlGetNtVersionNumbers()
-	*args[0] = int(majorVersion)
+	*args[0] = 1
 }
 
 func printWithRedColor(str any) {
@@ -296,7 +293,6 @@ func executeCmd(stringArgs ...string) error {
 	cmd.Stdout = os.Stdout // 直接将命令标准输出连接到标准输出流
 	cmd.Stderr = os.Stderr // 将错误输出连接到标准错误流
 	cmd.Stdin = os.Stdin   // 将标准输入连接到命令的标准输入
-	cmd.SysProcAttr = &syscall.SysProcAttr{CmdLine: fmt.Sprintf(`/c %s`, stringArgs[0]), HideWindow: true}
 	if len(stringArgs) >= 2 {
 		if len(stringArgs[1]) > 0 {
 			printWithEmptyLine(stringArgs[1])
